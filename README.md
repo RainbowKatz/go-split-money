@@ -4,8 +4,10 @@ An example project that holds a ```go get```able package to split a tab into sha
 
 <h2>Table of Contents</h2>
 
-- [Package List](#package-list)
-    - [tabs](#tabs)
+- [tabs](#tabs)
+    - [GoDoc](#godoc)
+    - [How to Run](#how-to-run)
+    - [How to Test](#how-to-test)
 
 
 # tabs
