@@ -50,3 +50,10 @@ SplitDiff(tab=7.000000, shares=2, diff=2.330000) >>
 Error: Results not exact due to rounding to nearest cent
 exit status 1
 ```
+
+## How to Test
+To run [tests](./tabs/splitdiff_test.go) (from repo root):
+```
+$ go test ./tabs
+ok      github.com/RainbowKatz/go-split-money/tabs      0.346s
+```
