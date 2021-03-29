@@ -1,10 +1,10 @@
-package tabs_test
+package split_test
 
 import (
 	"math"
 	"testing"
 
-	"github.com/RainbowKatz/go-split-money/tabs"
+	"github.com/rainbowkatz/split"
 )
 
 const stdErr float64 = 0.01
@@ -12,8 +12,8 @@ const stdErr float64 = 0.01
 var (
 	// these test cases will complete sucessfully, though some will have rounding errors
 	positiveTestCases = []struct {
-		tab             float64   // tab total to split
-		shares          int       // number of shares to split the tab into
+		total           float64   // total total to split
+		shares          int       // number of shares to split the total into
 		diff            float64   // difference between consecutive shares
 		expectedResults []float64 // expected result shares
 		isExpectedErr   bool      // boolean that is true only if error expected
@@ -30,14 +30,14 @@ var (
 
 	// these test cases will result in errors for various validation reasons (not rounding errors)
 	negativeTestCases = []struct {
-		tab    float64 // tab total to split
-		shares int     // number of shares to split the tab into
+		total  float64 // total total to split
+		shares int     // number of shares to split the total into
 		diff   float64 // difference between consecutive shares
 	}{
 		{10., 1, 1.},    // min shares
 		{10., 0, 1.},    // min shares
-		{-2., 4, 20.},   // positive tab
-		{0., 4, 20.},    // positive tab
+		{-2., 4, 20.},   // positive total
+		{0., 4, 20.},    // positive total
 		{20., 4, -0.05}, // non-negative diff
 		{10., 2, 11.},   // minTab
 		{111., 13, 18.}, // minTab
@@ -46,7 +46,7 @@ var (
 
 func TestSplitDiffPositiveFlows(t *testing.T) {
 	for _, tt := range positiveTestCases {
-		actualResults, err := tabs.SplitDiff(tt.tab, tt.shares, tt.diff)
+		actualResults, err := split.SplitDiff(tt.total, tt.shares, tt.diff)
 		if err == nil && tt.isExpectedErr {
 			t.Errorf("Error incorrect, got: nil, expected: err")
 			break
@@ -60,7 +60,7 @@ func TestSplitDiffPositiveFlows(t *testing.T) {
 		for caseIdx := 0; caseIdx < len(tt.expectedResults); caseIdx++ {
 			// wrong if off by a stdErr or more
 			if math.Abs(actualResults[caseIdx]-tt.expectedResults[caseIdx]) >= stdErr {
-				t.Errorf("Results incorrect, got: %v, expected: %v >> case %d: {%.2f, %d, %.2f}", actualResults, tt.expectedResults, caseIdx, tt.tab, tt.shares, tt.diff)
+				t.Errorf("Results incorrect, got: %v, expected: %v >> case %d: {%.2f, %d, %.2f}", actualResults, tt.expectedResults, caseIdx, tt.total, tt.shares, tt.diff)
 				break
 			}
 		}
@@ -69,9 +69,9 @@ func TestSplitDiffPositiveFlows(t *testing.T) {
 
 func TestSplitDiffNegativeFlows(t *testing.T) {
 	for caseIdx, tt := range negativeTestCases {
-		_, err := tabs.SplitDiff(tt.tab, tt.shares, tt.diff)
+		_, err := split.SplitDiff(tt.total, tt.shares, tt.diff)
 		if err == nil {
-			t.Errorf("Error incorrect, got: nil, expected: err >> case %d: {%.2f, %d, %.2f}", caseIdx, tt.tab, tt.shares, tt.diff)
+			t.Errorf("Error incorrect, got: nil, expected: err >> case %d: {%.2f, %d, %.2f}", caseIdx, tt.total, tt.shares, tt.diff)
 			break
 		}
 	}
