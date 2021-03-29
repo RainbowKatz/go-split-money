@@ -1,7 +1,7 @@
 /*
 	Package Tabs provides methods of splitting a typical tab between multiple parties.
 */
-package tabs
+package split
 
 import (
 	"fmt"
@@ -10,25 +10,8 @@ import (
 
 const stdErr float64 = 0.009
 
-// SplitDiffPrint calls SplitDiff and then prints the results
-func SplitDiffPrint(tab float64, shares int, diff float64) ([]float64, error) {
-	results, err := SplitDiff(tab, shares, diff)
-	if err != nil && results == nil {
-		return nil, err
-	}
-
-	//display results
-	fmt.Printf("\nSplitDiff(tab=%f, shares=%d, diff=%f) >>\n", tab, shares, diff)
-	for i, share := range results {
-		fmt.Printf("  Share %d: $%.2f\n", i+1, share)
-	}
-
-	// return results
-	return results, err
-}
-
-// SplitDiff splits a tab into a given number of shares, with a diff between each consecutive share.
-// SplitDiff may return results along with an error if rounding error(s) occurred.
+/* SplitDiff splits a tab into a given number of shares, with a diff between each consecutive share.
+An error is returned along with approximate resultsif rounding error(s) occurred. */
 func SplitDiff(tab float64, shares int, diff float64) ([]float64, error) {
 	// output
 	var splitTabs []float64
@@ -63,6 +46,27 @@ func SplitDiff(tab float64, shares int, diff float64) ([]float64, error) {
 
 	// return output with no error
 	return splitTabs, nil
+}
+
+// SplitDiffPrint calls SplitDiff and then prints the results
+func SplitDiffPrint(tab float64, shares int, diff float64, isVerbose bool) ([]float64, error) {
+	results, err := SplitDiff(tab, shares, diff)
+	if err != nil && results == nil {
+		return nil, err
+	}
+
+	//display results
+	var indent string
+	if isVerbose {
+		fmt.Printf("\nSplitDiff(tab=%f, shares=%d, diff=%f) >>\n", tab, shares, diff)
+		indent = "  "
+	}
+	for i, share := range results {
+		fmt.Printf("%sShare %d: $%.2f\n", indent, i+1, share)
+	}
+
+	// return results
+	return results, err
 }
 
 // validateSplitDiff performs validation for the SplitDiff function

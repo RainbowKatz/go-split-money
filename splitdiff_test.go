@@ -1,10 +1,10 @@
-package tabs_test
+package split_test
 
 import (
 	"math"
 	"testing"
 
-	"github.com/RainbowKatz/go-split-money/tabs"
+	"github.com/rainbowkatz/split"
 )
 
 const stdErr float64 = 0.01
@@ -46,7 +46,7 @@ var (
 
 func TestSplitDiffPositiveFlows(t *testing.T) {
 	for _, tt := range positiveTestCases {
-		actualResults, err := tabs.SplitDiff(tt.tab, tt.shares, tt.diff)
+		actualResults, err := split.SplitDiff(tt.tab, tt.shares, tt.diff)
 		if err == nil && tt.isExpectedErr {
 			t.Errorf("Error incorrect, got: nil, expected: err")
 			break
@@ -69,7 +69,7 @@ func TestSplitDiffPositiveFlows(t *testing.T) {
 
 func TestSplitDiffNegativeFlows(t *testing.T) {
 	for caseIdx, tt := range negativeTestCases {
-		_, err := tabs.SplitDiff(tt.tab, tt.shares, tt.diff)
+		_, err := split.SplitDiff(tt.tab, tt.shares, tt.diff)
 		if err == nil {
 			t.Errorf("Error incorrect, got: nil, expected: err >> case %d: {%.2f, %d, %.2f}", caseIdx, tt.tab, tt.shares, tt.diff)
 			break

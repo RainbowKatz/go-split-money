@@ -1,25 +1,38 @@
-<h1>go-split-money</h1>
+<h1>split</h1>
 
-An example project that holds a ```go get```able package to split a tab into shares.
+A Go example module that splits an amount into equal shares.
 
 <h2>Table of Contents</h2>
 
-- [tabs](#tabs)
-    - [GoDoc](#godoc)
-    - [How to Run](#how-to-run)
-    - [How to Test](#how-to-test)
+- [Docs](#docs)
+- [Using](#using)
+  - [CLI](#cli)
+- [Testing](#testing)
 
+<br/>
 
-# tabs
-## GoDoc
-For documentation, see [GoDoc](https://godoc.org/github.com/RainbowKatz/go-split-money/tabs)
+## Docs
+Docs are [here](https://pkg.go.dev/github.com/rainbowkatz/split)
 
-## How to Run
-The ```main.go``` file is set to run ```SplitDiffPrint```, a convenience func which calls the ```SplitDiff``` function, and then displays the formatted results.
+<br/>
+
+## Using
+Import as `github.com/rainbowkatz/split` for use in another module or use CLI for direct use (see below)
+
+<br/>
+
+### CLI
+There is a CLI provided as a separate module: 
+```bash
+go get github.com/rainbowkatz/split/gosplit
+```
+If your $GOPATH is part of your system path, that's all you need to do.  
+
+<br/>
 
 To run with default values (from repo root):
 ```
-$ go run main.go
+$ gosplit
 ```
 output:
 ```
@@ -31,7 +44,7 @@ SplitDiff(tab=10.000000, shares=2, diff=1.000000) >>
 To run with custom values, use command-line flags:
 
 ```
-$ go run main.go -tab=28.00 -shares=5 -diff=2.00
+$ gosplit -tab=28.00 -shares=5 -diff=2.00
 
 SplitDiff(tab=28.000000, shares=5, diff=2.000000) >>
   Share 1: $1.60
@@ -43,7 +56,7 @@ SplitDiff(tab=28.000000, shares=5, diff=2.000000) >>
 
 Testing a case with rounding error (taken from [test cases](./tabs/splitdiff_test.go))
 ```
-$ go run main.go -tab=7 -shares=2 -diff=2.33
+$ gosplit -tab=7 -shares=2 -diff=2.33
 
 SplitDiff(tab=7.000000, shares=2, diff=2.330000) >>
   Share 1: $2.34
@@ -53,9 +66,11 @@ Error: Results not exact due to rounding to nearest cent
 exit status 1
 ```
 
-## How to Test
-To run [tests](./tabs/splitdiff_test.go) (from repo root):
+<br/>
+
+## Testing
+To run [tests](./splitdiff_test.go) (from repo root):
 ```
-$ go test ./tabs
+$ go test .
 ok      github.com/RainbowKatz/go-split-money/tabs      0.346s
 ```
